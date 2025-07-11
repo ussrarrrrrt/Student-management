@@ -1,0 +1,100 @@
+@extends('layouts')
+
+@section('content')
+<div class="container">
+
+    <h3 class="text-center mt-5">Enrollment Management</h3>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+
+        <div class="col-md-8">
+            <div class="form-area">
+                <form method="POST" action="{{ route('enrollments.update', $enrollment->id) }}">
+                    @csrf
+                    @method('PUT')
+
+                    {{-- 1re ligne --}}
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Enroll No</label>
+                            <input type="text"
+                                   name="enroll_no"
+                                   value="{{ old('enroll_no', $enrollment->enroll_no) }}"
+                                   class="form-control @error('enroll_no') is-invalid @enderror">
+                            @error('enroll_no')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="promotion_id">Promotion</label>
+                            <select name="promotion_id" id="promotion_id"
+                                    class="form-control @error('promotion_id') is-invalid @enderror">
+                                <option value="">-- Select a promotion --</option>
+                                @foreach($promotions as $promo)
+                                    <option value="{{ $promo->id }}"
+                                        {{ old('promotion_id', $enrollment->promotion_id) == $promo->id ? 'selected' : '' }}>
+                                        {{ $promo->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('promotion_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- 2e ligne --}}
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="student_id">Student</label>
+                            <select name="student_id" id="student_id"
+                                    class="form-control @error('student_id') is-invalid @enderror">
+                                <option value="">-- Select a student --</option>
+                                @foreach($students as $student)
+                                    <option value="{{ $student->id }}"
+                                        {{ old('student_id', $enrollment->student_id) == $student->id ? 'selected' : '' }}>
+                                        {{ $student->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('student_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Join Date</label>
+                            <input type="date"
+                                   name="join_date"
+                                   value="{{ old('join_date', $enrollment->join_date->format('Y-m-d')) }}"
+                                   class="form-control @error('join_date') is-invalid @enderror">
+                            @error('join_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- 3e ligne --}}
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Fee (MAD)</label>
+                            <input type="number" step="0.01"
+                                   name="fee"
+                                   value="{{ old('fee', $enrollment->fee) }}"
+                                   class="form-control @error('fee') is-invalid @enderror">
+                            @error('fee')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{{ route('enrollments.index') }}" class="btn btn-link">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
