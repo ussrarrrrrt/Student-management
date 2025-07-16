@@ -4,15 +4,13 @@
 
     <div class="row">
 
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Liste des Teachers</h2>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-success" href="{{ route('teachers.create') }}"> Create New Teachers</a>
-            </div>
+        <div class="row mb-3">
+        <div class="col-md-6">
+            <h2>Liste des Teachers</h2>
         </div>
-
+        <div class="col-md-6 text-end">
+            <a class="btn btn-success" href="{{ route('teachers.create') }}">Créer un nouvel Teacher</a>
+        </div>
     </div>
 
    
@@ -59,15 +57,21 @@
 
             <td>
 
-                <form action="{{ route('teachers.destroy',$teacher->id) }}" method="POST">
+                 <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" style="display: flex; gap: 5px;">
+                <a class="btn btn-info btn-sm" href="{{ route('teachers.show', $teacher->id) }}" title="Voir">
+                    <i class="bi bi-eye"></i>
+                </a>
 
-                    <a class="btn btn-info" href="{{ route('teachers.show',$teacher->id) }}">Show</a>
-                    <a class="btn btn-primary" href="{{ route('teachers.edit',$teacher->id) }}">Edit</a>
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                <a class="btn btn-primary btn-sm" href="{{ route('teachers.edit', $teacher->id) }}" title="Modifier">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
 
-                </form>
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm" title="Supprimer" onclick="return confirm('Are you sure?')">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
 
             </td>
 

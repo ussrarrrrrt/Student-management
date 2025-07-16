@@ -4,12 +4,13 @@
 
 <div class="row">
 
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2>Liste des Courses</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <h2>Liste des courses</h2>
         </div>
-        <div class="pull-right">
-            <a class="btn btn-success" href="{{ route('courses.create') }}"> Create New Course</a>
+        <div class="col-md-6 text-end">
+            <a class="btn btn-success" href="{{ route('courses.create') }}">Créer un nouvel Course</a>
         </div>
     </div>
 
@@ -55,14 +56,20 @@
 
         <td>
 
-            <form action="{{ route('courses.destroy',$course->id) }}" method="POST">
+            <form action="{{ route('courses.destroy', $course->id) }}" method="POST" style="display: flex; gap: 5px;">
+                <a class="btn btn-info btn-sm" href="{{ route('courses.show', $course->id) }}" title="Voir">
+                    <i class="bi bi-eye"></i>
+                </a>
 
-                <a class="btn btn-info" href="{{ route('courses.show',$course->id) }}">Show</a>
-                <a class="btn btn-primary" href="{{ route('courses.edit',$course->id) }}">Edit</a>
+                <a class="btn btn-primary btn-sm" href="{{ route('courses.edit', $course->id) }}" title="Modifier">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger">Delete</button>
-
+                <button type="submit" class="btn btn-danger btn-sm" title="Supprimer" onclick="return confirm('Are you sure?')">
+                    <i class="bi bi-trash"></i>
+                </button>
             </form>
 
         </td>

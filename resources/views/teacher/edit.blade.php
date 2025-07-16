@@ -12,7 +12,7 @@
         <div class="col-md-8">
 
             <div class="form-area">
-                <form method="post" action="{{url('teachers/'.$teachers->id)}}">
+                <form method="post" action="{{url('teachers/'.$teacher->id)}}">
                     @csrf
                     @method("put")
                     <div class="row">

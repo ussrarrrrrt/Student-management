@@ -2,67 +2,87 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payement;
+use App\Models\Enrollment;
 use Illuminate\Http\Request;
 
 class PayementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-         
-        $payements = course::paginate(5); // Pas besoin de links() dans la vue dans ce cas
-        return view('payements.index', compact('courses'));
-    }
-    
+        $payements = Payement::with('enrollment.student')
+                     ->latest()
+                     ->paginate(10);
 
-    /**
-     * Show the form for creating a new resource.
-     */
+        return view('payement.index', compact('payements'));
+    }
+
     public function create()
     {
-         $payements = Course::all();
-        return view('promotion.create', compact('courses'));
+        $enrollments = Enrollment::with('student')->get();
+        return view('payement.create', compact('enrollments'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+     
+    
     public function store(Request $request)
     {
-        //
+        info('i am here');
+        info($request);
+
+        $data = $request->validate([
+            'enrollment_id' => 'required',
+            'paid_date'     => 'required|date',
+            'amount'        => 'required',
+        ]);
+
+        Payement::create([
+            'enrollment_id' => $data['enrollment_id'],
+            'paid_date' => $data['paid_date'],
+            'amount' => $data['amount']
+        ]);
+
+        return redirect('payement')->with('flash_message', 'Paiement enregistré avec succès ');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+ 
+    
+    public function show(Payement $payement)
     {
-        //
+        return view('payement.show', compact('payement'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    
+    public function edit(Payement $payement)
     {
-        //
+        $enrollments = Enrollment::with('student')->get();
+        return view('payement.edit', compact('payement', 'enrollments'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    public function update(Request $request, Payement $payement)
     {
-        //
+        $data = $request->validate([
+            'enrollment_id' => 'required|exists:enrollments,id',
+            'paid_date'     => 'required|date',
+            'amount'        => 'required|numeric|min:0',
+        ]);
+
+        $payement->update($data);
+
+        return redirect()
+               ->route('payements.index')
+               ->with('success', 'Paiement mis à jour !');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+    public function destroy(Payement $payement)
     {
-        //
+        $payement->delete();
+        return redirect()
+               ->route('payement.index')
+               ->with('success', 'Paiement supprimé.');
     }
 }
+

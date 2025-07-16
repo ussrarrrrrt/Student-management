@@ -6,12 +6,12 @@
 
 <div class="row">
 
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
+      <div class="row mb-3">
+        <div class="col-md-6">
             <h2>Liste des Promotions</h2>
         </div>
-        <div class="pull-right">
-            <a class="btn btn-success" href="{{ route('promotions.create') }}"> Create New promotion</a>
+        <div class="col-md-6 text-end">
+            <a class="btn btn-success" href="{{ route('promotions.create') }}">Créer un nouvel Promotion</a>
         </div>
     </div>
 
@@ -48,7 +48,6 @@
     <tr>
 
         <td>{{ ++$i }}</td>
-
         <td>{{ $promotion->name }}</td>
 
         <td>{{ $promotion->course->nom}}</td>
